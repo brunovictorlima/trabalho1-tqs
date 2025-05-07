@@ -70,6 +70,35 @@
                 "isDefault": true // Torna esta a tarefa de build padrão
             },
             "detail": "Compila a aplicação principal da calculadora"
+        },
+        {
+            "label": "build test runner", // Nome da tarefa de build dos testes
+            "type": "shell",
+            "command": "gcc", // O comando é o seu compilador
+            "args": [ // Argumentos para o comando gcc
+                "calculadora.c",
+                "test/test.c", // Caminho para o arquivo de testes
+                "-I", // Flag para adicionar caminho de inclusão
+                "test/minunit-master", // Caminho para a pasta dos headers do minunit
+                "-o", // Flag para nome do arquivo de saída
+                "test_runner.exe", // Nome do executável de testes no Windows
+                "-Wall",
+                "-Wextra",
+                " -pedantic",
+                "-g",
+                 "-finput-charset=UTF-8", // Flags de codificação
+                 "-fexec-charset=UTF-8"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}" // Executa o comando na raiz do projeto
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build" // Pode ser do tipo 'build' também
+            },
+            "detail": "Compila o executável dos testes unitários"
         }
     ],
     "version": "2.0.0"

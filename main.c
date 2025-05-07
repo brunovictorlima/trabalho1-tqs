@@ -48,6 +48,7 @@ int main() {
             printf("Preco unitario: R$ %d,00\n", preco_unitario);
             printf("O valor total é R$ %d,00\n", total);
             printf("-----------------------\n");
+            printf("-----------------------\n");
         }
     }
 

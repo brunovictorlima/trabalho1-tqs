@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Calculadora App", // Nome da sua configuração de execução
+            "type": "cppdbg", // Tipo para C/C++ debug
+            "request": "launch",
+            "program": "${workspaceFolder}/calculadora_app.exe", // Caminho para o executável
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}", // Diretório de trabalho
+            "environment": [],
+            "externalConsole": true, // True para rodar em um terminal externo
+            "MIMode": "gdb", // Modo para usar GDB (com MinGW)
+            "miDebuggerPath": "gdb.exe", // Verifique se gdb.exe está no PATH, ou coloque o caminho completo
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build calculadora app" // Nome da tarefa de build a ser executada antes de iniciar
+        }
+    ]
+}

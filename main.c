@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <locale.h>
 #include "calculadora.h"
 
 int main() {
+    setlocale(LC_ALL, "");
+    
     int idade;
     int quantidade;
     int preco_unitario;
@@ -47,6 +50,10 @@ int main() {
             printf("-----------------------\n");
         }
     }
+
+    printf("\nPressione Enter para sair...");
+    getchar(); // Consome o '\n' que sobrou do último scanf("%d", ...)
+    getchar(); // Espera pelo Enter real do usuário
 
     return 0; // Indica que o programa terminou com sucesso
 }

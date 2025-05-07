@@ -1,0 +1,60 @@
+# Nome do Workflow
+name: CI da Calculadora de Bilhetes (Windows) # Nome atualizado para indicar que roda em Windows
+
+# Evento que dispara o workflow
+on:
+  push:
+    branches:
+      - main # Ou 'master'
+
+  # pull_request:
+  #   branches:
+  #     - main # ou 'master'
+
+# Jobs (tarefas)
+jobs:
+  build_and_test_windows: # Nome do Job atualizado
+    name: Build e Teste no Windows # Nome mais descritivo
+
+    # Ambiente onde o job será executado
+    # Muda de ubuntu-latest para windows-latest
+    runs-on: windows-latest
+
+    # Passos (Steps) do Job
+    steps:
+    # Passo 1: Faz o checkout do código
+    - name: Checkout do Código
+      uses: actions/checkout@v4
+
+    # NOVO PASSO: Configura o ambiente MSYS2/MinGW
+    # MSYS2 oferece um shell bash e pacman (gerenciador de pacotes) no Windows
+    # Usaremos pacman para instalar o toolchain MinGW-w64 (GCC/G++)
+    - name: Configurar Ambiente MinGW
+      uses: msys2/setup-msys2@v2 # Usa a action oficial para MSYS2
+      with:
+        # 'MINGW64' configura um ambiente que usa o toolchain MinGW-w64 de 64 bits
+        msystem: MINGW64
+        # Lista de pacotes do pacman para instalar (gcc, g++)
+        # Certifique-se de que os pacotes correspondam ao seu compilador
+        # 'base-devel' inclui make e outras ferramentas essenciais
+        packages: >
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-g++
+          base-devel
+        # Atualiza a lista de pacotes do pacman
+        update: true
+
+    # Passo 3 (original Passo 2): Compila o executável de testes
+    # Este comando GCC agora será executado dentro do ambiente MinGW configurado
+    # O executável de saída no Windows terá automaticamente a extensão .exe
+    # Os caminhos (calculadora.c, test/test.c) ainda são relativos à raiz do repo
+    # A flag -I continua a mesma, pois a estrutura de pastas é mantida
+    - name: Compilar Test Runner
+      # O shell padrão para steps após setup-msys2 é bash, o que é compatível com o comando
+      run: gcc calculadora.c test/test.c -I test/minunit-master -o test_runner -Wall -Wextra -pedantic -g
+
+    # Passo 4 (original Passo 3): Executa os testes unitários
+    # Executa o executável de testes que agora é um arquivo .exe no Windows
+    - name: Executar Testes Unitários
+      # Use o nome do executável compilado. No Windows, é 'test_runner.exe'
+      run: ./test_runner.exe # Execute o executável com a extensão .exe
